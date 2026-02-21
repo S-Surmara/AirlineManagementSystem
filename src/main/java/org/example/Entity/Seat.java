@@ -6,66 +6,34 @@ import org.example.Enums.SeatType;
 import java.util.UUID;
 
 public class Seat {
-    String seatId;
-    double seatPrice;
-    SeatType seatType;
-    SeatLocation seatLocation;
-    boolean isAvailable;
-    double baggageCapcity;
-    public Seat(double seatPrice,SeatType seatType,SeatLocation seatLocation,boolean isAvailable,double baggageCapcity){
+
+    private String seatId;
+    private double seatPrice;
+    private SeatType seatType;
+    private SeatLocation seatLocation;
+    private boolean isAvailable;
+    // FIXED: typo 'baggageCapcity' → 'baggageCapacity'
+    private double baggageCapacity;
+
+    public Seat(double seatPrice, SeatType seatType, SeatLocation seatLocation,
+                boolean isAvailable, double baggageCapacity) {
         this.seatId = UUID.randomUUID().toString();
         this.seatPrice = seatPrice;
-        this.seatLocation = seatLocation;
         this.seatType = seatType;
+        this.seatLocation = seatLocation;
         this.isAvailable = isAvailable;
-        this.baggageCapcity = baggageCapcity;
+        this.baggageCapacity = baggageCapacity;
     }
 
-    public String getSeatId() {
-        return seatId;
-    }
-
-    public void setSeatId(String seatId) {
-        this.seatId = seatId;
-    }
-
-    public double getSeatPrice() {
-        return seatPrice;
-    }
-
-    public void setSeatPrice(double seatPrice) {
-        this.seatPrice = seatPrice;
-    }
-
-    public SeatType getSeatType() {
-        return seatType;
-    }
-
-    public void setSeatType(SeatType seatType) {
-        this.seatType = seatType;
-    }
-
-    public SeatLocation getSeatLocation() {
-        return seatLocation;
-    }
-
-    public void setSeatLocation(SeatLocation seatLocation) {
-        this.seatLocation = seatLocation;
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(boolean available) {
-        isAvailable = available;
-    }
-
-    public double getBaggageCapcity() {
-        return baggageCapcity;
-    }
-
-    public void setBaggageCapcity(double baggageCapcity) {
-        this.baggageCapcity = baggageCapcity;
-    }
+    public String getSeatId() { return seatId; }
+    public double getSeatPrice() { return seatPrice; }
+    public void setSeatPrice(double seatPrice) { this.seatPrice = seatPrice; }
+    public SeatType getSeatType() { return seatType; }
+    public void setSeatType(SeatType seatType) { this.seatType = seatType; }
+    public SeatLocation getSeatLocation() { return seatLocation; }
+    public void setSeatLocation(SeatLocation seatLocation) { this.seatLocation = seatLocation; }
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+    public double getBaggageCapacity() { return baggageCapacity; }
+    public void setBaggageCapacity(double baggageCapacity) { this.baggageCapacity = baggageCapacity; }
 }

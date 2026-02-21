@@ -8,17 +8,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SearchService {
-    AirlineRepositry airlineRepositry;
 
-    public SearchService(AirlineRepositry airlineRepositry){
+    private final AirlineRepositry airlineRepositry;
+
+    public SearchService(AirlineRepositry airlineRepositry) {
         this.airlineRepositry = airlineRepositry;
     }
-    public List<Flight> search(String source, String destination, LocalDate date){
+
+    public List<Flight> search(String source, String destination, LocalDate date) {
         return airlineRepositry.getAllFlights()
                 .stream()
-                .filter((flight) -> flight.getSource() == source
-                                && flight.getDestination() == destination
-                                && flight.getDepartureDateAndTime().toLocalDate() == date )
+                .filter(flight ->
+                        // FIXED: == → equalsIgnoreCase for case-insensitive string comparison
+                        flight.getSource().equalsIgnoreCase(source)
+                                && flight.getDestination().equalsIgnoreCase(destination)
+                                // FIXED: == → .equals() for LocalDate comparison
+                                && flight.getDepartureDateAndTime().toLocalDate().equals(date))
                 .collect(Collectors.toList());
     }
 }

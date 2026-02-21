@@ -15,24 +15,27 @@ import java.util.List;
 
 public class AirlineManagementSystem {
 
-    // FIXED: was 'public static' — must be private volatile for double-checked locking
     private static volatile AirlineManagementSystem instance;
 
     private final SearchService searchService;
     private final BookingService bookingService;
     private final FlightManagementService flightManagementService;
 
-    // FIXED: Constructor was empty — now wires all services (Facade pattern)
+    // FIXED: promoted from local variables to fields so getters can expose them
+    private final AirlineRepositry airlineRepo;
+    private final BookingRepostiry bookingRepo;
+    private final UserRepositry userRepo;
+
     private AirlineManagementSystem() {
-        AirlineRepositry airlineRepo = new AirlineRepositry();
-        BookingRepostiry bookingRepo = new BookingRepostiry();
-        UserRepositry userRepo = new UserRepositry();
-        this.searchService = new SearchService(airlineRepo);
-        this.bookingService = new BookingService(bookingRepo, airlineRepo);
+        this.airlineRepo = new AirlineRepositry();
+        this.bookingRepo = new BookingRepostiry();
+        this.userRepo    = new UserRepositry();
+
+        this.searchService           = new SearchService(airlineRepo);
+        this.bookingService          = new BookingService(bookingRepo, airlineRepo);
         this.flightManagementService = new FlightManagementService(airlineRepo, userRepo);
     }
 
-    // FIXED: was synchronized on method — replaced with double-checked locking (better performance)
     public static AirlineManagementSystem getInstance() {
         if (instance == null) {
             synchronized (AirlineManagementSystem.class) {
@@ -44,7 +47,8 @@ public class AirlineManagementSystem {
         return instance;
     }
 
-    // ADDED: Facade methods delegating to services
+    // ── Facade Methods ──────────────────────────────────────────
+
     public List<Flight> search(String source, String destination, LocalDate date) {
         return searchService.search(source, destination, date);
     }
@@ -55,5 +59,33 @@ public class AirlineManagementSystem {
 
     public void cancelBooking(String bookingId, PaymentStratergy paymentStrategy) {
         bookingService.cancelBooking(bookingId, paymentStrategy);
+    }
+
+    // ── Service Getters (used by Main for admin operations) ─────
+
+    public FlightManagementService getFlightManagementService() {
+        return flightManagementService;
+    }
+
+    public SearchService getSearchService() {
+        return searchService;
+    }
+
+    public BookingService getBookingService() {
+        return bookingService;
+    }
+
+    // ── Repository Getters (used by Main to register users/flights directly) ──
+
+    public UserRepositry getUserRepository() {
+        return userRepo;
+    }
+
+    public AirlineRepositry getAirlineRepository() {
+        return airlineRepo;
+    }
+
+    public BookingRepostiry getBookingRepository() {
+        return bookingRepo;
     }
 }
